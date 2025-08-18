@@ -1,0 +1,33 @@
+name: CI Build and Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, ubuntu-22.04-arm, macos-13, macos-14, windows-latest]
+        python-version: ["3.13"]
+      fail-fast: false
+      max-parallel: 5
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Upgrade pip
+      run: python -m pip install --upgrade pip
+    - name: Install pipx
+      run: python -m pip install pipx
+    - name: Build wheel with pipx
+      run: pipx run build
+    - name: Install built wheel
+      run: pip install dist/*.whl
+    - name: Run tests
+      run: pytest -v

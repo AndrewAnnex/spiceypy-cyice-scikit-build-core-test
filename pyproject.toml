@@ -1,0 +1,8 @@
+[build-system]
+requires = ["scikit-build-core", "cython", "numpy"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "test_cyice"
+version = "0.0.1"
+dependencies = ["numpy", "pytest"]
