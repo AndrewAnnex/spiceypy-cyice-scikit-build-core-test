@@ -6,3 +6,11 @@ build-backend = "scikit_build_core.build"
 name = "test_cyice"
 version = "0.0.1"
 dependencies = ["numpy", "pytest"]
+
+[tool.scikit-build]
+wheel.packages = ["test_cyice"]
+wheel.exclude = [
+  "lib/**",
+  "include/**",
+  "lib/cmake/**"
+]
