@@ -12,6 +12,11 @@ include(FetchContent)
 # Put CSPICE libs inside our package, not top-level lib/
 set(CMAKE_INSTALL_LIBDIR "test_cyice" CACHE INTERNAL "")
 
+if(MSVC)
+  # Force DLLs to install alongside LIBs instead of bin/
+  set(CMAKE_INSTALL_BINDIR "test_cyice" CACHE INTERNAL "")
+endif()
+
 # Put CSPICE headers somewhere harmless in our package
 set(CMAKE_INSTALL_INCLUDEDIR ${SKBUILD_NULL_DIR} CACHE INTERNAL "")
 
