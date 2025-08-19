@@ -21,5 +21,5 @@ def _load_cspice():
     except FileNotFoundError as e:
         raise RuntimeError(f"Bundled CSPICE shared library not found: {libname}") from e
 
-# Expose a ctypes handle
+# # Expose a ctypes handle
 ctypes_cspice = _load_cspice()

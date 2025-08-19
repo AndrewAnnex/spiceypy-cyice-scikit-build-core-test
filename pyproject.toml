@@ -8,9 +8,12 @@ version = "0.0.1"
 dependencies = ["numpy", "pytest"]
 
 [tool.scikit-build]
-wheel.packages = ["test_cyice"]
-wheel.exclude = [
-  "lib/**",
-  "include/**",
-  "lib/cmake/**"
+logging.level = "INFO"
+sdist.include = ["src/test_cyice/__init__.py"]
+sdist.exclude = [
+    ".github",
+    "*.cmake",
+    "test_cyice/cmake/**",
+    "test_cyice/ignore-include/**",
+    "test_cyice/ignore-data/**"
 ]

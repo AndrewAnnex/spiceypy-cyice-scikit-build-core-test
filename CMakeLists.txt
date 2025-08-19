@@ -8,10 +8,16 @@ find_package(
 
 include(FetchContent)
 
-# avoid creating a lib folder inside the wheel
+
+# Put CSPICE libs inside our package, not top-level lib/
 set(CMAKE_INSTALL_LIBDIR "test_cyice" CACHE INTERNAL "")
-set(CMAKE_INSTALL_INCLUDEDIR "test_cyice/include" CACHE INTERNAL "")
-set(CMAKE_INSTALL_DATAROOTDIR "test_cyice/ignore-data" CACHE INTERNAL "")
+
+# Put CSPICE headers somewhere harmless in our package
+set(CMAKE_INSTALL_INCLUDEDIR ${SKBUILD_NULL_DIR} CACHE INTERNAL "")
+
+# Also redirect data root to avoid polluting share/ etc.
+set(CMAKE_INSTALL_DATAROOTDIR ${SKBUILD_NULL_DIR} CACHE INTERNAL "")
+
 # Bring in your CSPICE CMake project 
 FetchContent_Declare(
   cspice
@@ -59,6 +65,6 @@ elseif(UNIX)
 endif()
 
 # install cspice, or don't and rely on the lib dir added to the wheel
-install(TARGETS cspice DESTINATION test_cyice/)
+#install(TARGETS cspice DESTINATION test_cyice/)
 # install test_cyice
 install(TARGETS test_cyice DESTINATION test_cyice/)

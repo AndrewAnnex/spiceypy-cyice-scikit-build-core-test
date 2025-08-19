@@ -1,12 +1,16 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
-*.py[codz]
+*.pyc
+*.pyo 
+*.pyd 
+*.pyz
 *$py.class
 
-.DS_Store
+#cmake
+*.cmake
 
-# C extensions
-*.so
+# macos
+.DS_Store
 
 # Distribution / packaging
 .Python
