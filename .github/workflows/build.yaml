@@ -29,5 +29,6 @@ jobs:
       run: pipx run build
     - name: Install built wheel
       run: pip install dist/*.whl
+      shell: bash
     - name: Run tests
       run: pytest -v
