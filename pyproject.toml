@@ -17,3 +17,8 @@ sdist.exclude = [
     "test_cyice/ignore-include/**",
     "test_cyice/ignore-data/**"
 ]
+
+[tool.cibuildwheel]
+build = ["cp313-*"]
+skip = ["*-win32", "*-manylinux_i686", "*-musllinux_i686", "pypy*", "pp*", "*-musllinux_aarch64", "*-musllinux_x86_64"]
+test-command = "pytest {project}/tests"

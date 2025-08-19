@@ -9,6 +9,9 @@ __pycache__/
 #cmake
 *.cmake
 
+# cibuildwheel
+wheelhouse/
+
 # macos
 .DS_Store
 
