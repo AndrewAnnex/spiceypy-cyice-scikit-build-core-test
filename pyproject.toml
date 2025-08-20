@@ -22,3 +22,9 @@ sdist.exclude = [
 build = ["cp313-*"]
 skip = ["*-win32", "*-manylinux_i686", "*-musllinux_i686", "pypy*", "pp*", "*-musllinux_aarch64", "*-musllinux_x86_64"]
 test-command = "pytest {project}/tests"
+
+[tool.cibuildwheel.pyodide]
+# disable some errors for pyodide only
+environment = { CFLAGS="-Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types -Wno-error=return-type" }
+# Build Pyodide wheels using Pyodide version 0.28.0
+pyodide-version = "0.28.0"
