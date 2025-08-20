@@ -8,13 +8,15 @@ from .test_cyice import b1900
 
 def _load_cspice():
     """Locate and load the bundled CSPICE shared library via ctypes."""
-    if sys.platform.startswith("win"):
-        libname = "cspice.dll"
-    elif sys.platform == "darwin":
-        libname = "libcspice.dylib"
-    else:
-        libname = "libcspice.so"
-
+    match sys.platform:
+        case p if p.startswith("win"):
+            libname = "cspice.dll"
+        case "darwin":
+            libname = "libcspice.dylib"
+        case "emscripten":
+            libname = "libcspice.wasm"
+        case _:
+            libname = "libcspice.so"
     try:
         with importlib.resources.path("test_cyice", libname) as libpath:
             return ctypes.CDLL(str(libpath))
