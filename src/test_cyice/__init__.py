@@ -18,8 +18,11 @@ def _load_cspice():
         case _:
             libname = "libcspice.so"
     try:
-        with importlib.resources.path("test_cyice", libname) as libpath:
+            libpath = Path(__file__).parent / libname
+            if not libpath.exists():
+                    raise RuntimeError(f"Bundled CSPICE shared library not found: {libname}")
             return ctypes.CDLL(str(libpath))
+
     except FileNotFoundError as e:
         raise RuntimeError(f"Bundled CSPICE shared library not found: {libname}") from e
 
