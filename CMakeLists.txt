@@ -27,7 +27,7 @@ set(CMAKE_INSTALL_DATAROOTDIR ${SKBUILD_NULL_DIR} CACHE INTERNAL "")
 FetchContent_Declare(
   cspice
   GIT_REPOSITORY https://github.com/AndrewAnnex/cspice-cmake-spiceypy.git
-  GIT_TAG        main   # or a release tag/sha
+  GIT_TAG        add_emscripten   # or a release tag/sha
 )
 FetchContent_MakeAvailable(cspice)
 
