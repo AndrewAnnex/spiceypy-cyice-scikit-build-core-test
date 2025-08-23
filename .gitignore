@@ -9,7 +9,7 @@ __pycache__/
 #cmake
 *.cmake
 
-# any .a files
+# any .a files 
 *.a
 
 # cibuildwheel
