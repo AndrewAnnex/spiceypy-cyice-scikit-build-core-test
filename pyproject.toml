@@ -9,6 +9,7 @@ dependencies = ["numpy", "pytest"]
 
 [tool.scikit-build]
 logging.level = "INFO"
+cmake.build-type = "Release"
 sdist.include = ["src/test_cyice/__init__.py"]
 sdist.exclude = [
     ".github",
@@ -17,6 +18,7 @@ sdist.exclude = [
     "test_cyice/ignore-include/**",
     "test_cyice/ignore-data/**"
 ]
+wheel.exclude = ["*.a"]
 
 [tool.cibuildwheel]
 build = ["cp312-*","cp313-*"]
