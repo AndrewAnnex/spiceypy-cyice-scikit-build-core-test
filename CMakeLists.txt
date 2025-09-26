@@ -94,7 +94,5 @@ message(NOTICE "test_cyice LINK_OPTIONS=${_opts}")
 get_directory_property(_dir_link_opts LINK_OPTIONS)
 message(NOTICE "DIRECTORY LINK_OPTIONS=${_dir_link_opts}")
 
-# install cspice, or don't and rely on the lib dir added to the wheel
-#install(TARGETS cspice DESTINATION test_cyice/)
 # install test_cyice
 install(TARGETS test_cyice DESTINATION test_cyice/)

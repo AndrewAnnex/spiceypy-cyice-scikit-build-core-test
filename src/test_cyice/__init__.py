@@ -6,7 +6,7 @@ from ctypes.util import find_library
 from pathlib import Path
 
 # Import the compiled Cython extension
-from .test_cyice import b1900
+from .test_cyice import *
 
 if os.environ.get("CSPICE_LOGLEVEL"):
     logging.basicConfig(level=os.environ["CSPICE_LOGLEVEL"].upper())
