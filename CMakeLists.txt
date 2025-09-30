@@ -10,11 +10,11 @@ include(FetchContent)
 
 
 # Put CSPICE libs inside our package, not top-level lib/
-set(CMAKE_INSTALL_LIBDIR "test_cyice" CACHE INTERNAL "")
+set(CMAKE_INSTALL_LIBDIR "test_cyice/utils/" CACHE INTERNAL "")
 
 if(MSVC)
   # Force DLLs to install alongside LIBs instead of bin/
-  set(CMAKE_INSTALL_BINDIR "test_cyice" CACHE INTERNAL "")
+  set(CMAKE_INSTALL_BINDIR "test_cyice/utils/" CACHE INTERNAL "")
 endif()
 
 # Put CSPICE headers somewhere harmless in our package
@@ -44,9 +44,9 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(cspice)
 
 # Convert pyx to c
-set(PYX_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/test_cyice/test_cyice.pyx)
-set(PXD_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/test_cyice/test_cyice.pxd)
-set(C_FILE ${CMAKE_CURRENT_BINARY_DIR}/test_cyice.c)
+set(PYX_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/test_cyice/cyice/test_cyice.pyx)
+set(PXD_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/test_cyice/cyice/test_cyice.pxd)
+set(C_FILE ${CMAKE_CURRENT_BINARY_DIR}/test_cyice/cyice/test_cyice.c)
 
 add_custom_command(
   OUTPUT ${C_FILE}
@@ -77,12 +77,12 @@ endif()
 # Fix runtime search paths so extension finds libcspice in same dir
 if(APPLE)
   set_target_properties(test_cyice PROPERTIES
-    INSTALL_RPATH "@loader_path"
+    INSTALL_RPATH "@loader_path/../utils"
     BUILD_WITH_INSTALL_RPATH ON
   )
 elseif(UNIX)
   set_target_properties(test_cyice PROPERTIES
-    INSTALL_RPATH "$ORIGIN"
+    INSTALL_RPATH "$ORIGIN/../utils"
     BUILD_WITH_INSTALL_RPATH ON
   )
 endif()
