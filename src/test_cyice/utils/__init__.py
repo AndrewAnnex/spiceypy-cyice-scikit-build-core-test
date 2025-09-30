@@ -24,7 +24,7 @@ def load_cspice():
 
     def _try_load(path: str, desc: str):
         try:
-            return ctypes.CDLL(path)
+            return ctypes.CDLL(path, mode=ctypes.RTLD_GLOBAL)
         except OSError as e:
             logger.debug(f"Failed to load CSPICE {desc} at {path}: {e}")
             return None
