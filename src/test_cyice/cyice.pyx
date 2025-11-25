@@ -37,7 +37,7 @@ DEF LONGLEN = 2048
 DEF TRACELEN = 256
 
 
-from .test_cyice cimport *
+from .cyice cimport *
 
 
 def b1900():
