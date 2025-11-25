@@ -55,9 +55,9 @@ if(DEFINED EMSCRIPTEN)
 endif()
 
 # Convert pyx to c
-set(PYX_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/test_cyice/cyice/cyice.pyx)
-set(PXD_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/test_cyice/cyice/cyice.pxd)
-set(C_FILE ${CMAKE_CURRENT_BINARY_DIR}/test_cyice/cyice/cyice.c)
+set(PYX_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/test_cyice/cyice.pyx)
+set(PXD_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/test_cyice/cyice.pxd)
+set(C_FILE ${CMAKE_CURRENT_BINARY_DIR}/test_cyice/cyice.c)
 
 add_custom_command(
   OUTPUT ${C_FILE}
@@ -107,4 +107,4 @@ message(NOTICE "DIRECTORY LINK_OPTIONS=${_dir_link_opts}")
 
 # install cyice
 # TODO should the destination be test_cyice/cyice/?
-install(TARGETS cyice DESTINATION test_cyice/cyice/)
+install(TARGETS cyice DESTINATION test_cyice/)
