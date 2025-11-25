@@ -10,11 +10,11 @@ include(FetchContent)
 
 
 # Put CSPICE libs inside our package, not top-level lib/
-set(CMAKE_INSTALL_LIBDIR "test_cyice" CACHE INTERNAL "")
+set(CMAKE_INSTALL_LIBDIR "test_cyice/utils/" CACHE INTERNAL "")
 
 if(MSVC)
   # Force DLLs to install alongside LIBs instead of bin/
-  set(CMAKE_INSTALL_BINDIR "test_cyice" CACHE INTERNAL "")
+  set(CMAKE_INSTALL_BINDIR "test_cyice/utils/" CACHE INTERNAL "")
 endif()
 
 # Put CSPICE headers somewhere harmless in our package
@@ -43,10 +43,21 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(cspice)
 
+# disable versioned/
+set_target_properties(cspice PROPERTIES
+  VERSION ""      # no libmyclibrary.so.X.Y.Z
+  SOVERSION ""    # no libmyclibrary.so.X
+  NO_SONAME ON    # don't encode a soname
+)
+
+if(DEFINED EMSCRIPTEN)
+  target_link_options(cspice PRIVATE -Wl,-soname,libcspice.wasm)
+endif()
+
 # Convert pyx to c
-set(PYX_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/test_cyice/test_cyice.pyx)
-set(PXD_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/test_cyice/test_cyice.pxd)
-set(C_FILE ${CMAKE_CURRENT_BINARY_DIR}/test_cyice.c)
+set(PYX_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/test_cyice/cyice/cyice.pyx)
+set(PXD_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/test_cyice/cyice/cyice.pxd)
+set(C_FILE ${CMAKE_CURRENT_BINARY_DIR}/test_cyice/cyice/cyice.c)
 
 add_custom_command(
   OUTPUT ${C_FILE}
@@ -56,43 +67,44 @@ add_custom_command(
   VERBATIM)
 
 # Make Python extension
-python_add_library(test_cyice MODULE ${C_FILE} WITH_SOABI)
+python_add_library(cyice MODULE ${C_FILE} WITH_SOABI)
 
 # Link to the CSPICE target exposed by the subproject
-target_include_directories(test_cyice PRIVATE ${Python_NumPy_INCLUDE_DIRS})
+target_include_directories(cyice PRIVATE ${Python_NumPy_INCLUDE_DIRS})
 
 # Set numpy options to ensure no deprecated apis older than 1.7
-target_compile_definitions(test_cyice
+target_compile_definitions(cyice
     PRIVATE
         NPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION
 )
 
 # Link CSPICE + math lib (only on UNIX)
 if(UNIX AND NOT WIN32 AND NOT MINGW)
-    target_link_libraries(test_cyice PRIVATE cspice m)
+    target_link_libraries(cyice PRIVATE cspice m)
 else()
-    target_link_libraries(test_cyice PRIVATE cspice)
+    target_link_libraries(cyice PRIVATE cspice)
 endif()
 
 # Fix runtime search paths so extension finds libcspice in same dir
 if(APPLE)
-  set_target_properties(test_cyice PROPERTIES
-    INSTALL_RPATH "@loader_path"
+  set_target_properties(cyice PROPERTIES
+    INSTALL_RPATH "@loader_path/../utils"
     BUILD_WITH_INSTALL_RPATH ON
   )
 elseif(UNIX)
-  set_target_properties(test_cyice PROPERTIES
-    INSTALL_RPATH "$ORIGIN"
+  set_target_properties(cyice PROPERTIES
+    INSTALL_RPATH "$ORIGIN/../utils"
     BUILD_WITH_INSTALL_RPATH ON
   )
 endif()
 
-get_target_property(_type test_cyice TYPE)
-get_target_property(_opts test_cyice LINK_OPTIONS)
-message(NOTICE "test_cyice TYPE=${_type}")
-message(NOTICE "test_cyice LINK_OPTIONS=${_opts}")
+get_target_property(_type cyice TYPE)
+get_target_property(_opts cyice LINK_OPTIONS)
+message(NOTICE "cyice TYPE=${_type}")
+message(NOTICE "cyice LINK_OPTIONS=${_opts}")
 get_directory_property(_dir_link_opts LINK_OPTIONS)
 message(NOTICE "DIRECTORY LINK_OPTIONS=${_dir_link_opts}")
 
-# install test_cyice
-install(TARGETS test_cyice DESTINATION test_cyice/)
+# install cyice
+# TODO should the destination be test_cyice/cyice/?
+install(TARGETS cyice DESTINATION test_cyice/cyice/)
