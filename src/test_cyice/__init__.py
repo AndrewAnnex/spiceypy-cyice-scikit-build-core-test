@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 from .utils import ctypes_cspice
 
 # Import the compiled Cython extension
-from .test_cyice import *
+from .cyice import *
 
 
 
