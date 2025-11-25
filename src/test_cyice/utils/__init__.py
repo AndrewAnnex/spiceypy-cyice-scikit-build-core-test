@@ -2,6 +2,7 @@ import os
 import sys
 import logging
 import ctypes
+from ctypes import CDLL, POINTER, c_int, c_double, c_char, c_char_p, c_void_p, RTLD_GLOBAL
 from ctypes.util import find_library
 from pathlib import Path
 
@@ -74,3 +75,6 @@ def load_cspice():
 
 # usage
 ctypes_cspice = load_cspice()
+
+ctypes_cspice.b1900_c.restype = c_double
+ctypes_cspice.b1950_c.restype = c_double
