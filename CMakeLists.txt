@@ -43,6 +43,17 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(cspice)
 
+# disable versioned/
+set_target_properties(cspice PROPERTIES
+  VERSION ""      # no libmyclibrary.so.X.Y.Z
+  SOVERSION ""    # no libmyclibrary.so.X
+  NO_SONAME ON    # don't encode a soname
+)
+
+if(DEFINED EMSCRIPTEN)
+  target_link_options(cspice PRIVATE -Wl,-soname,libcspice.wasm)
+endif()
+
 # Convert pyx to c
 set(PYX_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/test_cyice/cyice/test_cyice.pyx)
 set(PXD_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/test_cyice/cyice/test_cyice.pxd)
@@ -95,4 +106,5 @@ get_directory_property(_dir_link_opts LINK_OPTIONS)
 message(NOTICE "DIRECTORY LINK_OPTIONS=${_dir_link_opts}")
 
 # install test_cyice
+# TODO should the destination be test_cyice/cyice/?
 install(TARGETS test_cyice DESTINATION test_cyice/)
